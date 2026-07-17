@@ -1,21 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Game Bank</title>
+<meta charset="UTF-8">
+<title>Игровой банк</title>
+
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    padding-top: 50px;
+}
+
+button {
+    font-size: 25px;
+    padding: 15px 30px;
+    border-radius: 10px;
+}
+</style>
+
 </head>
 
 <body>
-<h1>Игровой банк</h1>
 
-<p id="result">Проверка...</p>
+<h1>🎲 Игровой банк</h1>
+
+<h2 id="balance">Баланс: 10000</h2>
+
+<button onclick="takeMoney()">
+Снять 1000
+</button>
+
+<p id="message"></p>
+
 
 <script>
-fetch("balance.json")
-.then(r => r.json())
-.then(data => {
-    document.getElementById("result").innerHTML =
-    "Баланс банка: " + data.balance;
-});
+
+let balance = localStorage.getItem("balance");
+
+if(balance === null){
+    balance = 10000;
+}
+
+balance = Number(balance);
+
+document.getElementById("balance").innerHTML =
+"Баланс: " + balance;
+
+
+function takeMoney(){
+
+    if(balance >= 1000){
+        balance -= 1000;
+        localStorage.setItem("balance", balance);
+
+        document.getElementById("balance").innerHTML =
+        "Баланс: " + balance;
+
+        document.getElementById("message").innerHTML =
+        "✅ Списано 1000";
+
+    } else {
+
+        balance = 0;
+
+        document.getElementById("message").innerHTML =
+        "❌ Денег нет";
+    }
+
+
+    setTimeout(function(){
+
+        document.body.innerHTML =
+        "<h1>Спасибо! 🎲</h1><p>Ход записан</p>";
+
+    },2000);
+
+}
+
 </script>
 
 </body>
