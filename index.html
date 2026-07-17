@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Game Bank</title>
+</head>
+
+<body>
+<h1>Игровой банк</h1>
+
+<p id="result">Проверка...</p>
+
+<script>
+fetch("balance.json")
+.then(r => r.json())
+.then(data => {
+    document.getElementById("result").innerHTML =
+    "Баланс банка: " + data.balance;
+});
+</script>
+
+</body>
+</html>
