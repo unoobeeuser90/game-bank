@@ -8,13 +8,19 @@
 body {
     font-family: Arial;
     text-align: center;
-    padding-top: 50px;
+    padding-top: 40px;
 }
 
 button {
-    font-size: 25px;
-    padding: 15px 30px;
+    font-size: 22px;
+    padding: 12px 25px;
+    margin: 10px;
     border-radius: 10px;
+}
+
+input {
+    font-size: 20px;
+    padding: 10px;
 }
 </style>
 
@@ -24,7 +30,7 @@ button {
 
 <h1>🎲 Игровой банк</h1>
 
-<h2 id="balance">Баланс: 10000</h2>
+<h2 id="balance"></h2>
 
 <button onclick="takeMoney()">
 Снять 1000
@@ -32,48 +38,93 @@ button {
 
 <p id="message"></p>
 
+<hr>
+
+<h3>🔐 Ведущий</h3>
+
+<input id="password" type="password" placeholder="Пароль">
+
+<br>
+
+<button onclick="resetBank()">
+Сбросить баланс
+</button>
+
 
 <script>
+
+const START_BALANCE = 10000;
+const PASSWORD = "1234"; // поменяй пароль здесь
 
 let balance = localStorage.getItem("balance");
 
 if(balance === null){
-    balance = 10000;
+    balance = START_BALANCE;
 }
 
 balance = Number(balance);
 
+showBalance();
+
+
+function showBalance(){
+
 document.getElementById("balance").innerHTML =
-"Баланс: " + balance;
+"💰 Баланс: " + balance;
+
+}
 
 
 function takeMoney(){
 
-    if(balance >= 1000){
-        balance -= 1000;
-        localStorage.setItem("balance", balance);
+if(balance >= 1000){
 
-        document.getElementById("balance").innerHTML =
-        "Баланс: " + balance;
+balance -= 1000;
 
-        document.getElementById("message").innerHTML =
-        "✅ Списано 1000";
+localStorage.setItem("balance", balance);
 
-    } else {
+showBalance();
 
-        balance = 0;
+document.getElementById("message").innerHTML =
+"✅ Списано 1000";
 
-        document.getElementById("message").innerHTML =
-        "❌ Денег нет";
-    }
+}
+
+else{
+
+document.getElementById("message").innerHTML =
+"❌ Баланс пуст";
+
+}
+
+}
 
 
-    setTimeout(function(){
+function resetBank(){
 
-        document.body.innerHTML =
-        "<h1>Спасибо! 🎲</h1><p>Ход записан</p>";
+let pass =
+document.getElementById("password").value;
 
-    },2000);
+
+if(pass === PASSWORD){
+
+balance = START_BALANCE;
+
+localStorage.setItem("balance", balance);
+
+showBalance();
+
+document.getElementById("message").innerHTML =
+"♻️ Баланс восстановлен";
+
+}
+
+else{
+
+document.getElementById("message").innerHTML =
+"❌ Неверный пароль";
+
+}
 
 }
 
