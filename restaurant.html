@@ -155,20 +155,24 @@ button:hover{
 <a class="back" href="index.html">⬅ Вернуться в банк</a>
 
 <script>
+const START_BALANCE = 10000;
+
 let balance = Number(localStorage.getItem("balance"));
 
 if (isNaN(balance)) {
-    balance = 10000;
+    balance = START_BALANCE;
     localStorage.setItem("balance", balance);
-}
-
-function updateBalance() {
-    document.getElementById("balance").textContent = balance;
 }
 
 updateBalance();
 
+function updateBalance() {
+    document.getElementById("balance").textContent = balance + " ₽";
+}
+
 function buy(name, price) {
+
+    balance = Number(localStorage.getItem("balance")) || START_BALANCE;
 
     if (balance < price) {
         alert("❌ Недостаточно средств!");
@@ -181,7 +185,7 @@ function buy(name, price) {
 
     updateBalance();
 
-    alert("✅ Вы купили: " + name + "\n\nСписано: " + price + " ₽");
+    alert("✅ Куплено: " + name + "\n💳 Остаток: " + balance + " ₽");
 }
 </script>
 
