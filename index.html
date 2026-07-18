@@ -2,125 +2,234 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Игровой банк</title>
+<title>🎲 Игровой банк</title>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding-top: 40px;
-    background: #f5f5f5;
+
+body{
+    font-family:Arial,sans-serif;
+    text-align:center;
+    padding-top:40px;
+    background:#111827;
+    color:white;
 }
 
-input {
-    font-size: 20px;
-    padding: 10px;
+
+h1{
+    color:#fbbf24;
 }
 
-button {
-    font-size: 22px;
-    padding: 12px 25px;
-    margin: 10px;
-    border-radius: 10px;
-    cursor: pointer;
+
+#balance{
+    color:#22c55e;
 }
+
+
+button{
+    font-size:20px;
+    padding:12px 25px;
+    margin:10px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+}
+
+
+button:hover{
+    opacity:.8;
+}
+
+
+.reset{
+    background:#ef4444;
+    color:white;
+}
+
 
 .menu-btn{
     display:inline-block;
-    margin-top:25px;
-    padding:12px 25px;
+    margin-top:30px;
+    padding:15px 30px;
     background:#f59e0b;
     color:black;
     text-decoration:none;
+    border-radius:12px;
     font-size:22px;
-    border-radius:10px;
     font-weight:bold;
 }
 
-.menu-btn:hover{
-    background:#FFD700;
+
+input{
+    font-size:20px;
+    padding:10px;
+    border-radius:8px;
 }
+
+
+#message{
+    font-size:20px;
+}
+
 </style>
 
 </head>
+
 <body>
+
 
 <h1>🎲 Игровой банк</h1>
 
+
 <h2 id="balance"></h2>
+
 
 <p id="message"></p>
 
+
 <hr>
+
 
 <h3>🔐 Ведущий</h3>
 
-<input id="password" type="password" placeholder="Пароль">
+
+<input 
+id="password" 
+type="password" 
+placeholder="Пароль">
+
 
 <br>
 
-<button onclick="resetBank()">
-Сбросить баланс
+
+<button class="reset" onclick="resetBank()">
+♻️ Сбросить баланс
 </button>
 
-<br><br>
+
+<br>
+
 
 <a href="restaurant.html" class="menu-btn">
 🍽 Ресторан
 </a>
 
-<script>
 
 
 <script>
+
+
 const START_BALANCE = 10000;
+
 const PASSWORD = "1234";
+
+
 
 let balance = localStorage.getItem("balance");
 
-if (balance === null) {
+
+
+if(balance === null){
+
     balance = START_BALANCE;
-    localStorage.setItem("balance", balance);
+
+    localStorage.setItem(
+        "balance",
+        balance
+    );
+
 }
+
+
 
 balance = Number(balance);
 
+
+
 showBalance();
 
-function showBalance() {
-    balance = Number(localStorage.getItem("balance")) || START_BALANCE;
+
+
+
+
+function showBalance(){
+
+
+    balance =
+    Number(localStorage.getItem("balance"))
+    || START_BALANCE;
+
+
 
     document.getElementById("balance").innerHTML =
-        "💰 Баланс: " + balance + " ₽";
+
+    "💰 Баланс: " 
+    + balance 
+    + " ₽";
+
+
 }
 
-function resetBank() {
 
-    let pass = document.getElementById("password").value;
 
-    if (pass === PASSWORD) {
+
+
+function resetBank(){
+
+
+    let pass =
+    document.getElementById("password").value;
+
+
+
+    if(pass === PASSWORD){
+
 
         balance = START_BALANCE;
 
-        localStorage.setItem("balance", balance);
+
+
+        localStorage.setItem(
+            "balance",
+            balance
+        );
+
+
 
         showBalance();
 
-        document.getElementById("message").innerHTML =
-            "♻️ Баланс восстановлен";
 
-    } else {
 
         document.getElementById("message").innerHTML =
-            "❌ Неверный пароль";
+        "♻️ Баланс восстановлен";
+
+
+
+    }else{
+
+
+        document.getElementById("message").innerHTML =
+        "❌ Неверный пароль";
+
 
     }
+
+
+
 }
 
-window.addEventListener("focus", showBalance);
-</script>
+
+
+
+
+window.addEventListener(
+"focus",
+showBalance
+);
+
+
 
 </script>
+
 
 </body>
 </html>
