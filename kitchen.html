@@ -1,46 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Кухня</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #222;
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+.order {
+    background: #333;
+    margin: 15px auto;
+    padding: 20px;
+    width: 300px;
+    border-radius: 15px;
+    border: 2px solid orange;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+}
+</style>
+
+</head>
+
+<body>
+
 <h1>🍳 Кухня</h1>
 
-<div id="orders">
-Ждём заказов...
-</div>
+<h2 id="status">
+Ожидание заказов...
+</h2>
+
+<div id="orders"></div>
 
 
 <script type="module">
+
+
+// Подключаем Supabase
 
 import { createClient } 
 from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 
+// ВСТАВЬ СВОИ ДАННЫЕ
+
 const supabase = createClient(
+
 "https://kvfytzxnlqxytqcsxkzq.supabase.co/rest/v1/",
+
 "sb_publishable_HLypTsrxK_uko9oa585o3Q_1QqNBqmd"
+
 );
 
 
 
+// функция показа заказа
+
+function showOrder(order){
+
+let box = document.createElement("div");
+
+box.className="order";
+
+
+box.innerHTML = `
+
+<h2>🔔 Новый заказ</h2>
+
+<p>🍔 Блюдо: ${order.food}</p>
+
+<p>💰 Цена: ${order.price} монет</p>
+
+<p>📌 Статус: ${order.status}</p>
+
+`;
+
+
+
+document
+.getElementById("orders")
+.appendChild(box);
+
+
+
+document.getElementById("status").innerHTML =
+"Есть новые заказы! 🔥";
+
+
+}
+
+
+
+// Получаем старые заказы
+
+let { data, error } = await supabase
+.from("orders")
+.select("*")
+.order("id",{ascending:false});
+
+
+
+if(data){
+
+data.forEach(showOrder);
+
+}
+
+
+
+// Слушаем новые заказы
+
 supabase
-.channel('orders-channel')
+
+.channel("orders-channel")
 
 .on(
-'postgres_changes',
+
+"postgres_changes",
+
 {
-event:'INSERT',
-schema:'public',
-table:'orders'
+
+event:"INSERT",
+
+schema:"public",
+
+table:"orders"
+
 },
 
 (payload)=>{
 
 
-let order = payload.new;
+console.log("Новый заказ:",payload.new);
 
 
-document.getElementById("orders").innerHTML +=
-`
-<h2>🔔 Новый заказ!</h2>
-<p>${order.food}</p>
-<p>${order.price} монет</p>
-`;
+showOrder(payload.new);
+
 
 }
 
@@ -49,4 +155,9 @@ document.getElementById("orders").innerHTML +=
 .subscribe();
 
 
+
 </script>
+
+
+</body>
+</html>
