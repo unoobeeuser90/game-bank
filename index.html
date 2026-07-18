@@ -75,29 +75,7 @@ document.getElementById("balance").innerHTML =
 }
 
 
-function takeMoney(){
 
-if(balance >= 1000){
-
-balance -= 1000;
-
-localStorage.setItem("balance", balance);
-
-showBalance();
-
-document.getElementById("message").innerHTML =
-"✅ Списано 1000";
-
-}
-
-else{
-
-document.getElementById("message").innerHTML =
-"❌ Баланс пуст";
-
-}
-
-}
 
 
 function resetBank(){
