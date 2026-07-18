@@ -118,16 +118,16 @@ placeholder="Пароль">
 <script>
 
 
+<script>
+
 const START_BALANCE = 10000;
-
 const PASSWORD = "1234";
-
 
 
 let balance = localStorage.getItem("balance");
 
 
-
+// Первый запуск игры
 if(balance === null){
 
     balance = START_BALANCE;
@@ -140,38 +140,31 @@ if(balance === null){
 }
 
 
-
 balance = Number(balance);
-
 
 
 showBalance();
 
 
 
-
+// Отображение баланса
 
 function showBalance(){
-
 
     balance =
     Number(localStorage.getItem("balance"))
     || START_BALANCE;
 
 
-
     document.getElementById("balance").innerHTML =
-
-    "💰 Баланс: " 
-    + balance 
-    + " ₽";
-
+    "💰 Баланс: " + balance + " ₽";
 
 }
 
 
 
 
+// Сброс баланса ведущим
 
 function resetBank(){
 
@@ -203,8 +196,8 @@ function resetBank(){
         "♻️ Баланс восстановлен";
 
 
-
-    }else{
+    }
+    else{
 
 
         document.getElementById("message").innerHTML =
@@ -214,12 +207,11 @@ function resetBank(){
     }
 
 
-
 }
 
 
 
-
+// Обновление после возврата из ресторана
 
 window.addEventListener(
 "focus",
@@ -227,7 +219,7 @@ showBalance
 );
 
 
-
+</script>
 </script>
 
 
