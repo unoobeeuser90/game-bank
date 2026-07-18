@@ -1,14 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <title>Игровой банк</title>
 
 <style>
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     text-align: center;
     padding-top: 40px;
+    background: #f5f5f5;
+}
+
+input {
+    font-size: 20px;
+    padding: 10px;
 }
 
 button {
@@ -16,25 +22,32 @@ button {
     padding: 12px 25px;
     margin: 10px;
     border-radius: 10px;
+    cursor: pointer;
 }
 
-input {
-    font-size: 20px;
-    padding: 10px;
+.menu-btn{
+    display:inline-block;
+    margin-top:25px;
+    padding:12px 25px;
+    background:#f59e0b;
+    color:black;
+    text-decoration:none;
+    font-size:22px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.menu-btn:hover{
+    background:#FFD700;
 }
 </style>
 
 </head>
-
 <body>
 
 <h1>🎲 Игровой банк</h1>
 
 <h2 id="balance"></h2>
-
-<button onclick="takeMoney()">
-Снять 1000
-</button>
 
 <p id="message"></p>
 
@@ -50,66 +63,57 @@ input {
 Сбросить баланс
 </button>
 
+<br><br>
+
+<a href="restaurant.html" class="menu-btn">
+🍽 Ресторан
+</a>
 
 <script>
 
 const START_BALANCE = 10000;
-const PASSWORD = "1234"; // поменяй пароль здесь
+const PASSWORD = "1234";
 
-let balance = localStorage.getItem("balance");
+let balance = Number(localStorage.getItem("balance"));
 
-if(balance === null){
+if (isNaN(balance)) {
     balance = START_BALANCE;
+    localStorage.setItem("balance", balance);
 }
-
-balance = Number(balance);
 
 showBalance();
 
-
-function showBalance(){
-
-document.getElementById("balance").innerHTML =
-"💰 Баланс: " + balance;
-
+function showBalance() {
+    balance = Number(localStorage.getItem("balance")) || START_BALANCE;
+    document.getElementById("balance").innerHTML = "💰 Баланс: " + balance + " ₽";
 }
 
+function resetBank() {
 
+    let pass = document.getElementById("password").value;
 
+    if (pass === PASSWORD) {
 
+        balance = START_BALANCE;
 
-function resetBank(){
+        localStorage.setItem("balance", balance);
 
-let pass =
-document.getElementById("password").value;
+        showBalance();
 
+        document.getElementById("message").innerHTML =
+        "♻️ Баланс восстановлен";
 
-if(pass === PASSWORD){
+    } else {
 
-balance = START_BALANCE;
+        document.getElementById("message").innerHTML =
+        "❌ Неверный пароль";
 
-localStorage.setItem("balance", balance);
-
-showBalance();
-
-document.getElementById("message").innerHTML =
-"♻️ Баланс восстановлен";
-
+    }
 }
 
-else{
-
-document.getElementById("message").innerHTML =
-"❌ Неверный пароль";
-
-}
-
-}
+window.addEventListener("focus", showBalance);
 
 </script>
-<a href="restaurant.html" class="menu-btn">
-    🍽 Ресторан
-</a>
+
 </body>
 </html>
-
