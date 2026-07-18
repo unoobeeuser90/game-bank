@@ -1,0 +1,52 @@
+<h1>🍳 Кухня</h1>
+
+<div id="orders">
+Ждём заказов...
+</div>
+
+
+<script type="module">
+
+import { createClient } 
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
+const supabase = createClient(
+"ТВОЙ_SUPABASE_URL",
+"ТВОЙ_ANON_KEY"
+);
+
+
+
+supabase
+.channel('orders-channel')
+
+.on(
+'postgres_changes',
+{
+event:'INSERT',
+schema:'public',
+table:'orders'
+},
+
+(payload)=>{
+
+
+let order = payload.new;
+
+
+document.getElementById("orders").innerHTML +=
+`
+<h2>🔔 Новый заказ!</h2>
+<p>${order.food}</p>
+<p>${order.price} монет</p>
+`;
+
+}
+
+)
+
+.subscribe();
+
+
+</script>
