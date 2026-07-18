@@ -129,9 +129,31 @@ document.getElementById("message").innerHTML =
 }
 
 </script>
-
-</body>
-</html>
 <a href="restaurant.html" class="menu-btn">
     🍽 Ресторан
-</a>
+</a><script>
+let balance = Number(localStorage.getItem("balance")) || 0;
+
+function updateBalance() {
+    document.getElementById("balance").textContent = balance;
+}
+
+updateBalance();
+
+function buy(name, price) {
+    if (balance >= price) {
+        balance -= price;
+
+        localStorage.setItem("balance", balance);
+
+        updateBalance();
+
+        alert("✅ Куплено: " + name);
+    } else {
+        alert("❌ Недостаточно средств!");
+    }
+}
+</script>
+</body>
+</html>
+
