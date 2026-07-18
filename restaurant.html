@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>🍽 Ресторан "Вкусный уголок"</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
@@ -21,22 +19,22 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    background:#1f2937;
     padding:20px;
+    background:#1f2937;
     border-bottom:3px solid #fbbf24;
     position:sticky;
     top:0;
 }
 
 .logo{
-    font-size:30px;
-    font-weight:bold;
+    font-size:28px;
     color:#fbbf24;
+    font-weight:bold;
 }
 
 .balance{
+    font-size:22px;
     color:#22c55e;
-    font-size:24px;
     font-weight:bold;
 }
 
@@ -48,9 +46,9 @@ body{
 
 .card{
     background:#1f2937;
-    border-radius:15px;
-    margin:20px 0;
     padding:20px;
+    margin:20px 0;
+    border-radius:15px;
     box-shadow:0 0 15px black;
 }
 
@@ -59,21 +57,21 @@ body{
 }
 
 .price{
-    font-size:22px;
     color:#22c55e;
+    font-size:22px;
     font-weight:bold;
 }
 
 button{
     width:100%;
-    margin-top:10px;
     padding:12px;
+    margin-top:10px;
     border:none;
     border-radius:10px;
     background:#f59e0b;
     font-size:18px;
-    cursor:pointer;
     font-weight:bold;
+    cursor:pointer;
 }
 
 button:hover{
@@ -81,77 +79,63 @@ button:hover{
 }
 
 .cart{
-
     background:#374151;
-    margin-top:30px;
     padding:20px;
     border-radius:15px;
-
+    margin-top:30px;
 }
 
 .total{
-
     font-size:24px;
     color:#22c55e;
-
-}
-
-.clear{
-
-    background:#ef4444;
-    color:white;
-
 }
 
 .pay{
-
     background:#22c55e;
-
 }
 
-.remove{
-
-    width:auto;
+.clear{
     background:#ef4444;
-    padding:6px 12px;
-    margin-left:10px;
-
+    color:white;
 }
 
 .receipt{
-
     display:none;
     background:#374151;
-    margin-top:25px;
-    border-radius:15px;
     padding:20px;
-
+    border-radius:15px;
+    margin-top:20px;
 }
 
 .receipt-item{
-
     background:#1f2937;
-    margin:5px;
     padding:10px;
-    border-radius:10px;
+    margin:5px;
+    border-radius:8px;
+}
 
+.remove-btn{
+    width:auto;
+    padding:5px 10px;
+    background:#ef4444;
+    color:white;
 }
 
 .back{
-
     display:block;
     text-align:center;
-    margin:30px;
     color:white;
-    font-size:22px;
-
+    margin:30px;
+    font-size:20px;
 }
 
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="top-bar">
 
@@ -160,54 +144,62 @@ button:hover{
 </div>
 
 <div class="balance">
-
 💳 Баланс:
 <span id="balance">0</span>
-
 </div>
 
 </div>
+
+
 
 <div class="container">
+
 
 <h1 style="text-align:center;color:#fbbf24;">
 📋 Меню
 </h1>
+
+
+
 <div class="card">
 <h2>🥯 Закуска «Филадельфия»</h2>
-<p>Нежный сливочный сыр, лосось и свежие овощи.</p>
+<p>Сыр, лосось и свежие овощи.</p>
 <div class="price">500 ₽</div>
 <button onclick="addToCart('Закуска Филадельфия',500)">
 🛒 В корзину
 </button>
 </div>
 
+
 <div class="card">
 <h2>🍅 Закуска томатная</h2>
-<p>Свежие томаты с зеленью и специями.</p>
+<p>Томаты с зеленью и специями.</p>
 <div class="price">500 ₽</div>
 <button onclick="addToCart('Закуска томатная',500)">
 🛒 В корзину
 </button>
 </div>
 
+
 <div class="card">
 <h2>🧀 Ассорти сыров и колбас</h2>
-<p>Большое ассорти мясных и сырных деликатесов.</p>
+<p>Большое ассорти деликатесов.</p>
 <div class="price">2000 ₽</div>
 <button onclick="addToCart('Ассорти сыров и колбас',2000)">
 🛒 В корзину
 </button>
 </div>
 
+
 <div class="card">
 <h2>🍳 Яичница</h2>
-<p>Домашняя яичница из двух яиц.</p>
+<p>Домашняя яичница.</p>
 <div class="price">1500 ₽</div>
 <button onclick="addToCart('Яичница',1500)">
 🛒 В корзину
 </button>
 </div>
+
 
 <div class="card">
 <h2>🍵 Чай</h2>
@@ -218,6 +210,7 @@ button:hover{
 </button>
 </div>
 
+
 <div class="card">
 <h2>🥤 Лимонад</h2>
 <p>Освежающий домашний лимонад.</p>
@@ -227,6 +220,8 @@ button:hover{
 </button>
 </div>
 
+
+
 <div class="cart">
 
 <h2>🛒 Корзина</h2>
@@ -235,87 +230,154 @@ button:hover{
 Корзина пустая
 </div>
 
+
 <p class="total">
 Итого:
 <span id="total">0</span> ₽
 </p>
 
+
 <button class="clear" onclick="clearCart()">
-🗑 Очистить корзину
+🗑 Очистить
 </button>
+
 
 <button class="pay" onclick="checkout()">
 💳 Оплатить
 </button>
 
+
 </div>
+
+
+
 
 <div class="receipt" id="receipt">
 
-<h2>🧾 Чек</h2>
+<h2>🧾 Чек заказа</h2>
 
 <div id="receiptText"></div>
 
 <button onclick="closeReceipt()">
-Закрыть чек
+❌ Закрыть чек
 </button>
 
 </div>
 
+
 </div>
+
+
 
 <audio id="paySound" src="sounds/payment.mp3"></audio>
 
-<a href="index.html" class="back">
+
+<a class="back" href="index.html">
 ⬅ Вернуться в банк
 </a>
-<script>
 
-const supabase = window.supabase.createClient(
 
+
+<script type="module">
+
+import { createClient } 
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
+// ВСТАВЬ СЮДА ДАННЫЕ SUPABASE
+
+const supabase = createClient(
 "https://kvfytzxnlqxytqcsxkzq.supabase.co",
-
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2Znl0enhubHF4eXRxY3N4a3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzNzE3NTgsImV4cCI6MjA5OTk0Nzc1OH0.dlVGtE359MBEL-P53p6XD7u1js3Bq1FcFQI6-ifBZsk"
-
 );
 
-let cart=[];
 
-let total=0;
+
+let cart = [];
+let total = 0;
 
 
 
 function updateBalance(){
 
-let balance=Number(localStorage.getItem("balance"));
+let balance = Number(localStorage.getItem("balance")) || 0;
 
-if(isNaN(balance)){
-
-balance=0;
-
-}
-
-document.getElementById("balance").innerHTML=balance+" ₽";
+document.getElementById("balance").innerHTML =
+balance + " ₽";
 
 }
+
 
 updateBalance();
+
 
 
 
 function addToCart(name,price){
 
 cart.push({
-
 name:name,
-
 price:price
-
 });
 
 updateCart();
 
 }
+
+
+
+
+
+function updateCart(){
+
+let box =
+document.getElementById("cartItems");
+
+
+box.innerHTML="";
+
+total=0;
+
+
+if(cart.length===0){
+
+box.innerHTML="🛒 Корзина пустая";
+
+}
+
+
+
+cart.forEach(function(item,index){
+
+
+let div=document.createElement("div");
+
+div.className="receipt-item";
+
+
+div.innerHTML =
+item.name+
+" — "+
+item.price+
+" ₽ "+
+"<button class='remove-btn' onclick='removeItem("+index+")'>❌</button>";
+
+
+box.appendChild(div);
+
+
+total += item.price;
+
+
+});
+
+
+document.getElementById("total").innerHTML =
+total;
+
+
+}
+
 
 
 
@@ -329,6 +391,8 @@ updateCart();
 
 
 
+
+
 function clearCart(){
 
 cart=[];
@@ -339,126 +403,182 @@ updateCart();
 
 
 
-function updateCart(){
-
-let box=document.getElementById("cartItems");
-
-box.innerHTML="";
-
-total=0;
 
 
+// отправка заказа на кухню
 
-if(cart.length===0){
-
-box.innerHTML="🛒 Корзина пустая";
-
-}
+async function sendOrder(food,price){
 
 
-
-cart.forEach(function(item,index){
-
-let div=document.createElement("div");
-
-div.className="receipt-item";
-
-div.innerHTML=
-
-item.name+
-
-" — "+
-
-item.price+
-
-" ₽ <button class='remove' onclick='removeItem("+index+")'>❌</button>";
-
-box.appendChild(div);
-
-total+=item.price;
-
+const {data,error}=await supabase
+.from("orders")
+.insert({
+food: food,
+price: price,
+status: "new"
 });
 
 
+if(error){
 
-document.getElementById("total").innerHTML=total;
+console.log("ОШИБКА SUPABASE:", error);
+alert(error.message);
 
 }
-    async function checkout(){
+else{
 
-if(cart.length===0){
+console.log("Заказ отправлен:", data);
 
-alert("Корзина пустая");
+}
+
+
+}
+
+
+
+
+async function checkout(){
+
+
+if(total===0){
+
+alert("🛒 Корзина пустая");
+
 return;
 
 }
 
 
-let balance = Number(localStorage.getItem("balance")) || 0;
+
+let balance =
+Number(localStorage.getItem("balance")) || 0;
+
 
 
 if(balance < total){
 
-alert("Недостаточно денег");
+alert("❌ Недостаточно денег");
+
 return;
 
 }
 
 
-// списание денег
 
-balance = balance - total;
+balance -= total;
+
 
 localStorage.setItem(
 "balance",
 balance
 );
 
-updateBalance();
 
 
-// отправка заказа в Supabase
+// отправляем блюда
 
-const orderNumber = Date.now();
+for(let item of cart){
 
-
-const { data, error } = await supabase
-.from("orders")
-.insert([
-{
-    order_number: orderNumber,
-    items: JSON.stringify(cart),
-    total: total,
-    status: "Новый"
-}
-])
-.select();
-
-
-
-if(error){
-
-console.log(error);
-
-alert("Ошибка отправки заказа");
-
-return;
+await sendOrder(
+item.name,
+item.price
+);
 
 }
 
 
-// звук оплаты
-
-document.getElementById("paySound").play();
 
 
-// очистка корзины
+
+let now=new Date();
+
+
+
+let receipt=
+
+"<h3>🎮 Заказ</h3>"+
+"<p>🕒 "+
+now.toLocaleString("ru-RU")
++"</p><hr>";
+
+
+
+cart.forEach(function(item){
+
+
+receipt +=
+
+"<div class='receipt-item'>🍽 "
++
+item.name
++
+" — "
++
+item.price
++
+" ₽</div>";
+
+
+});
+
+
+
+receipt +=
+
+"<hr><h2>💰 Итого: "
++
+total
++
+" ₽</h2>";
+
+
+
+document.getElementById("receiptText").innerHTML =
+receipt;
+
+
+
+document.getElementById("receipt").style.display =
+"block";
+
+
 
 cart=[];
 
 updateCart();
 
-alert("Заказ отправлен на кухню № "+orderNumber);
+updateBalance();
 
+
+alert("🔔 Заказ отправлен на кухню!");
 
 }
+
+
+
+
+
+function closeReceipt(){
+
+document.getElementById("receipt").style.display="none";
+
+}
+
+
+
+
+
+// чтобы старые кнопки меню работали
+
+window.addToCart=addToCart;
+window.checkout=checkout;
+window.clearCart=clearCart;
+window.removeItem=removeItem;
+window.closeReceipt=closeReceipt;
+
+
+</script>
+
+
+</body>
+</html>
