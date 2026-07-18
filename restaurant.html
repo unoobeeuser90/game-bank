@@ -278,32 +278,27 @@ button:hover{
 
 
 
-<script type="module">
-
-import { createClient } 
-from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-
-// ВСТАВЬ СЮДА ДАННЫЕ SUPABASE
-
-const supabase = createClient(
-"https://kvfytzxnlqxytqcsxkzq.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2Znl0enhubHF4eXRxY3N4a3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzNzE3NTgsImV4cCI6MjA5OTk0Nzc1OH0.dlVGtE359MBEL-P53p6XD7u1js3Bq1FcFQI6-ifBZsk"
-);
-
+<script>
 
 
 let cart = [];
+
 let total = 0;
 
 
 
 function updateBalance(){
 
-let balance = Number(localStorage.getItem("balance")) || 0;
+    let balance =
+    Number(localStorage.getItem("balance"));
 
-document.getElementById("balance").innerHTML =
-balance + " ₽";
+    if(isNaN(balance)){
+        balance = 0;
+    }
+
+
+    document.getElementById("balance").innerHTML =
+    balance + " ₽";
 
 }
 
@@ -313,14 +308,15 @@ updateBalance();
 
 
 
+
 function addToCart(name,price){
 
-cart.push({
-name:name,
-price:price
-});
+    cart.push({
+        name:name,
+        price:price
+    });
 
-updateCart();
+    updateCart();
 
 }
 
@@ -330,62 +326,68 @@ updateCart();
 
 function updateCart(){
 
-let box =
-document.getElementById("cartItems");
+    let box =
+    document.getElementById("cartItems");
 
 
-box.innerHTML="";
+    box.innerHTML="";
 
-total=0;
+    total=0;
 
 
-if(cart.length===0){
+    if(cart.length===0){
 
-box.innerHTML="🛒 Корзина пустая";
+        box.innerHTML="🛒 Корзина пустая";
+
+    }
+
+
+
+    cart.forEach(function(item,index){
+
+
+        let div =
+        document.createElement("div");
+
+
+        div.className="receipt-item";
+
+
+        div.innerHTML =
+
+        item.name+
+        " — "+
+        item.price+
+        " ₽ " +
+
+        "<button class='remove-btn' onclick='removeItem("+index+")'>❌</button>";
+
+
+
+        box.appendChild(div);
+
+
+        total += item.price;
+
+
+    });
+
+
+    document.getElementById("total").innerHTML =
+    total;
+
 
 }
 
-
-
-cart.forEach(function(item,index){
-
-
-let div=document.createElement("div");
-
-div.className="receipt-item";
-
-
-div.innerHTML =
-item.name+
-" — "+
-item.price+
-" ₽ "+
-"<button class='remove-btn' onclick='removeItem("+index+")'>❌</button>";
-
-
-box.appendChild(div);
-
-
-total += item.price;
-
-
-});
-
-
-document.getElementById("total").innerHTML =
-total;
-
-
-}
 
 
 
 
 function removeItem(index){
 
-cart.splice(index,1);
+    cart.splice(index,1);
 
-updateCart();
+    updateCart();
 
 }
 
@@ -395,94 +397,9 @@ updateCart();
 
 function clearCart(){
 
-cart=[];
+    cart=[];
 
-updateCart();
-
-}
-
-
-
-
-
-// отправка заказа на кухню
-
-async function sendOrder(food,price){
-
-
-const {data,error}=await supabase
-.from("orders")
-.insert({
-food: food,
-price: price,
-status: "new"
-});
-
-
-if(error){
-
-console.log("ОШИБКА SUPABASE:", error);
-alert(error.message);
-
-}
-else{
-
-console.log("Заказ отправлен:", data);
-
-}
-
-
-}
-
-
-
-
-async function checkout(){
-
-
-if(total===0){
-
-alert("🛒 Корзина пустая");
-
-return;
-
-}
-
-
-
-let balance =
-Number(localStorage.getItem("balance")) || 0;
-
-
-
-if(balance < total){
-
-alert("❌ Недостаточно денег");
-
-return;
-
-}
-
-
-
-balance -= total;
-
-
-localStorage.setItem(
-"balance",
-balance
-);
-
-
-
-// отправляем блюда
-
-for(let item of cart){
-
-await sendOrder(
-item.name,
-item.price
-);
+    updateCart();
 
 }
 
@@ -490,67 +407,114 @@ item.price
 
 
 
-let now=new Date();
+function checkout(){
+
+
+    if(total===0){
+
+        alert("🛒 Корзина пустая");
+
+        return;
+
+    }
 
 
 
-let receipt=
-
-"<h3>🎮 Заказ</h3>"+
-"<p>🕒 "+
-now.toLocaleString("ru-RU")
-+"</p><hr>";
+    let balance =
+    Number(localStorage.getItem("balance")) || 0;
 
 
 
-cart.forEach(function(item){
+    if(balance < total){
 
+        alert("❌ Недостаточно денег");
 
-receipt +=
+        return;
 
-"<div class='receipt-item'>🍽 "
-+
-item.name
-+
-" — "
-+
-item.price
-+
-" ₽</div>";
-
-
-});
+    }
 
 
 
-receipt +=
-
-"<hr><h2>💰 Итого: "
-+
-total
-+
-" ₽</h2>";
+    balance -= total;
 
 
-
-document.getElementById("receiptText").innerHTML =
-receipt;
+    localStorage.setItem(
+        "balance",
+        balance
+    );
 
 
 
-document.getElementById("receipt").style.display =
-"block";
+    let sound =
+    document.getElementById("paySound");
+
+
+    if(sound){
+
+        sound.play().catch(()=>{});
+
+    }
 
 
 
-cart=[];
 
-updateCart();
-
-updateBalance();
+    let now =
+    new Date();
 
 
-alert("🔔 Заказ отправлен на кухню!");
+
+    let receipt =
+
+    "<h3>🎮 Заказ №"+
+    (Math.floor(Math.random()*9000)+1000)
+    +"</h3>";
+
+
+    receipt +=
+    "<p>🕒 "+
+    now.toLocaleString("ru-RU")
+    +"</p><hr>";
+
+
+
+    cart.forEach(function(item){
+
+        receipt +=
+
+        "<div class='receipt-item'>🍽 "
+        +item.name+
+        " — "+
+        item.price+
+        " ₽</div>";
+
+    });
+
+
+
+    receipt +=
+
+    "<hr><h2>💰 Итого: "
+    +total+
+    " ₽</h2>";
+
+
+
+    document.getElementById("receiptText").innerHTML =
+    receipt;
+
+
+    document.getElementById("receipt").style.display =
+    "block";
+
+
+
+    cart=[];
+
+
+    updateCart();
+
+    updateBalance();
+
 
 }
 
@@ -560,21 +524,10 @@ alert("🔔 Заказ отправлен на кухню!");
 
 function closeReceipt(){
 
-document.getElementById("receipt").style.display="none";
+    document.getElementById("receipt").style.display =
+    "none";
 
 }
-
-
-
-
-
-// чтобы старые кнопки меню работали
-
-window.addToCart=addToCart;
-window.checkout=checkout;
-window.clearCart=clearCart;
-window.removeItem=removeItem;
-window.closeReceipt=closeReceipt;
 
 
 </script>
