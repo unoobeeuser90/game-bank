@@ -410,31 +410,29 @@ updateCart();
 async function sendOrder(food,price){
 
 
-const {error}=await supabase
-
+const {data,error}=await supabase
 .from("orders")
-
 .insert({
-
-food:food,
-
-price:price,
-
-status:"new"
-
+food: food,
+price: price,
+status: "new"
 });
-
 
 
 if(error){
 
-console.log(error);
+console.log("ОШИБКА SUPABASE:", error);
+alert(error.message);
+
+}
+else{
+
+console.log("Заказ отправлен:", data);
 
 }
 
 
 }
-
 
 
 
