@@ -528,7 +528,28 @@ function closeReceipt(){
     "none";
 
 }
+async function sendOrder(food, price){
 
+const { data, error } = await supabase
+.from("orders")
+.insert([
+{
+food: food,
+price: price,
+status: "new"
+}
+]);
+
+
+if(error){
+console.log(error);
+alert("Ошибка заказа");
+}
+else{
+alert("Заказ отправлен на кухню!");
+}
+
+}
 
 </script>
 
