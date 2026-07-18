@@ -1,45 +1,189 @@
-<div class="restaurant">
-    <h1>🍽 Ресторан "Вкусный уголок"</h1>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍽 Ресторан</title>
 
-    <div class="card">
-        <h2>🥯 Закуска «Филадельфия»</h2>
-        <p>Нежный сливочный сыр, лосось и свежие овощи.</p>
-        <span>💰 500</span>
-        <button onclick="buy('Закуска Филадельфия',500)">Купить</button>
-    </div>
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#1f2937;
+    color:white;
+}
 
-    <div class="card">
-        <h2>🍅 Закуска томатная</h2>
-        <p>Свежие томаты с зеленью и специями.</p>
-        <span>💰 500</span>
-        <button onclick="buy('Закуска томатная',500)">Купить</button>
-    </div>
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#111827;
+    padding:18px 25px;
+    border-bottom:3px solid gold;
+    position:sticky;
+    top:0;
+}
 
-    <div class="card">
-        <h2>🧀 Ассорти сыров и колбас</h2>
-        <p>Подборка премиальных сыров и мясных деликатесов.</p>
-        <span>💰 2000</span>
-        <button onclick="buy('Ассорти сыров/колбас',2000)">Купить</button>
-    </div>
+.top-bar h2{
+    margin:0;
+    color:gold;
+}
 
-    <div class="card">
-        <h2>🍳 Яичница</h2>
-        <p>Домашняя яичница из двух яиц.</p>
-        <span>💰 1500</span>
-        <button onclick="buy('Яичница',1500)">Купить</button>
-    </div>
+.balance{
+    font-size:22px;
+    font-weight:bold;
+    color:#22c55e;
+}
 
-    <div class="card">
-        <h2>🍵 Чай</h2>
-        <p>Ароматный чёрный или зелёный чай.</p>
-        <span>💰 1000</span>
-        <button onclick="buy('Чай',1000)">Купить</button>
-    </div>
+.restaurant{
+    max-width:900px;
+    margin:30px auto;
+    padding:20px;
+}
 
-    <div class="card">
-        <h2>🥤 Лимонад</h2>
-        <p>Освежающий домашний лимонад.</p>
-        <span>💰 1000</span>
-        <button onclick="buy('Лимонад',1000)">Купить</button>
+.restaurant h1{
+    text-align:center;
+    color:gold;
+}
+
+.card{
+    background:#374151;
+    padding:18px;
+    margin:18px 0;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,.3);
+}
+
+.card h2{
+    margin-top:0;
+    color:#FFD700;
+}
+
+.price{
+    font-size:24px;
+    color:#22c55e;
+    font-weight:bold;
+}
+
+button{
+    margin-top:15px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#f59e0b;
+    color:black;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#FFD700;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin:40px;
+    color:white;
+    text-decoration:none;
+    font-size:20px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="top-bar">
+    <h2>🍽 Ресторан</h2>
+
+    <div class="balance">
+        💳 Баланс:
+        <span id="balance">0</span>
     </div>
 </div>
+
+<div class="restaurant">
+
+<h1>Меню</h1>
+
+<div class="card">
+<h2>🥯 Закуска «Филадельфия»</h2>
+<p>Нежный сливочный сыр, лосось и овощи.</p>
+<div class="price">💰500</div>
+<button onclick="buy('Закуска Филадельфия',500)">Купить</button>
+</div>
+
+<div class="card">
+<h2>🍅 Закуска томатная</h2>
+<p>Свежие томаты с зеленью.</p>
+<div class="price">💰500</div>
+<button onclick="buy('Закуска томатная',500)">Купить</button>
+</div>
+
+<div class="card">
+<h2>🧀 Ассорти сыров и колбас</h2>
+<p>Большое ассорти деликатесов.</p>
+<div class="price">💰2000</div>
+<button onclick="buy('Ассорти',2000)">Купить</button>
+</div>
+
+<div class="card">
+<h2>🍳 Яичница</h2>
+<p>Домашняя яичница.</p>
+<div class="price">💰1500</div>
+<button onclick="buy('Яичница',1500)">Купить</button>
+</div>
+
+<div class="card">
+<h2>🍵 Чай</h2>
+<p>Чёрный или зелёный.</p>
+<div class="price">💰1000</div>
+<button onclick="buy('Чай',1000)">Купить</button>
+</div>
+
+<div class="card">
+<h2>🥤 Лимонад</h2>
+<p>Домашний лимонад.</p>
+<div class="price">💰1000</div>
+<button onclick="buy('Лимонад',1000)">Купить</button>
+</div>
+
+</div>
+
+<a class="back" href="index.html">⬅ Вернуться в банк</a>
+
+<script>
+let balance = Number(localStorage.getItem("balance"));
+
+if (isNaN(balance)) {
+    balance = 10000;
+    localStorage.setItem("balance", balance);
+}
+
+function updateBalance() {
+    document.getElementById("balance").textContent = balance;
+}
+
+updateBalance();
+
+function buy(name, price) {
+
+    if (balance < price) {
+        alert("❌ Недостаточно средств!");
+        return;
+    }
+
+    balance -= price;
+
+    localStorage.setItem("balance", balance);
+
+    updateBalance();
+
+    alert("✅ Вы купили: " + name + "\n\nСписано: " + price + " ₽");
+}
+</script>
+
+</body>
+</html>
