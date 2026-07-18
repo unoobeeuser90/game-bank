@@ -279,7 +279,10 @@ button:hover{
 
 
 <script>
+<script>
+
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8AephX-pU-fQP6brxEgbDN_hEtNMbcPo-SefJN2_ZcRwFQ-NFF8vCs9h0oL3mm-GKsg/exec";
+
 
 let cart = [];
 
@@ -445,6 +448,45 @@ function checkout(){
 
 
 
+    let orderNumber =
+    Math.floor(Math.random()*9000)+1000;
+
+
+
+    // Отправка заказа в Google Таблицу
+
+    fetch(GOOGLE_SCRIPT_URL, {
+
+        method:"POST",
+
+        body:JSON.stringify({
+
+            orderId: orderNumber,
+
+            items: cart,
+
+            total: total,
+
+            time: new Date().toLocaleString("ru-RU")
+
+        })
+
+    })
+    .then(()=>{
+
+        console.log("Заказ отправлен");
+
+    })
+    .catch(()=>{
+
+        console.log("Ошибка отправки заказа");
+
+    });
+
+
+
+
+
     let sound =
     document.getElementById("paySound");
 
@@ -458,38 +500,27 @@ function checkout(){
 
 
 
+
     let now =
     new Date();
-fetch(GOOGLE_SCRIPT_URL, {
 
-    method:"POST",
-
-    body:JSON.stringify({
-
-        orderId: Math.floor(Math.random()*9000)+1000,
-
-        items: cart,
-
-        total: total,
-
-        time: new Date().toLocaleString("ru-RU")
-
-    })
-
-});
 
 
     let receipt =
 
     "<h3>🎮 Заказ №"+
-    (Math.floor(Math.random()*9000)+1000)
-    +"</h3>";
+    orderNumber+
+    "</h3>";
+
 
 
     receipt +=
+
     "<p>🕒 "+
     now.toLocaleString("ru-RU")
     +"</p><hr>";
+
+
 
 
 
@@ -507,6 +538,8 @@ fetch(GOOGLE_SCRIPT_URL, {
 
 
 
+
+
     receipt +=
 
     "<hr><h2>💰 Итого: "
@@ -515,12 +548,17 @@ fetch(GOOGLE_SCRIPT_URL, {
 
 
 
+
+
     document.getElementById("receiptText").innerHTML =
     receipt;
 
 
+
     document.getElementById("receipt").style.display =
     "block";
+
+
 
 
 
@@ -545,6 +583,8 @@ function closeReceipt(){
 
 }
 
+
+</script>
 
 </script>
 
