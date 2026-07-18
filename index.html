@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
+
 <meta charset="UTF-8">
 <title>🎲 Игровой банк</title>
 
@@ -22,31 +24,32 @@ h1{
 
 #balance{
     color:#22c55e;
+    font-size:28px;
 }
 
 
 button{
+
     font-size:20px;
     padding:12px 25px;
     margin:10px;
     border-radius:10px;
     border:none;
     cursor:pointer;
-}
 
-
-button:hover{
-    opacity:.8;
 }
 
 
 .reset{
+
     background:#ef4444;
     color:white;
+
 }
 
 
 .menu-btn{
+
     display:inline-block;
     margin-top:30px;
     padding:15px 30px;
@@ -56,23 +59,23 @@ button:hover{
     border-radius:12px;
     font-size:22px;
     font-weight:bold;
+
 }
 
 
 input{
+
     font-size:20px;
     padding:10px;
     border-radius:8px;
+
 }
 
-
-#message{
-    font-size:20px;
-}
 
 </style>
 
 </head>
+
 
 <body>
 
@@ -80,101 +83,77 @@ input{
 <h1>🎲 Игровой банк</h1>
 
 
-<h2 id="balance"></h2>
+<h2 id="balance">
+💰 Баланс: 0 ₽
+</h2>
+
 
 
 <p id="message"></p>
 
 
+
 <hr>
+
 
 
 <h3>🔐 Ведущий</h3>
 
 
 <input 
-id="password" 
-type="password" 
+id="password"
+type="password"
 placeholder="Пароль">
+
 
 
 <br>
 
 
+
 <button class="reset" onclick="resetBank()">
+
 ♻️ Сбросить баланс
+
 </button>
+
+
 
 
 <br>
 
 
 <a href="restaurant.html" class="menu-btn">
+
 🍽 Ресторан
+
 </a>
 
 
 
-<script>
-
 
 <script>
+
 
 const START_BALANCE = 10000;
+
+
 const PASSWORD = "1234";
 
 
-let balance = localStorage.getItem("balance");
 
 
-// Первый запуск игры
-if(balance === null){
+// Создание баланса при первом запуске
 
-    balance = START_BALANCE;
-
-    localStorage.setItem(
-        "balance",
-        balance
-    );
-
-}
+function loadBalance(){
 
 
-balance = Number(balance);
-
-
-showBalance();
+    let balance =
+    localStorage.getItem("balance");
 
 
 
-// Отображение баланса
-
-function showBalance(){
-
-    balance =
-    Number(localStorage.getItem("balance"))
-    || START_BALANCE;
-
-
-    document.getElementById("balance").innerHTML =
-    "💰 Баланс: " + balance + " ₽";
-
-}
-
-
-
-
-// Сброс баланса ведущим
-
-function resetBank(){
-
-
-    let pass =
-    document.getElementById("password").value;
-
-
-
-    if(pass === PASSWORD){
+    if(balance === null){
 
 
         balance = START_BALANCE;
@@ -186,6 +165,68 @@ function resetBank(){
             balance
         );
 
+    }
+
+
+
+    return Number(balance);
+
+
+}
+
+
+
+
+function showBalance(){
+
+
+    let balance =
+    loadBalance();
+
+
+
+    document.getElementById("balance").innerHTML =
+
+    "💰 Баланс: "
+    +
+    balance
+    +
+    " ₽";
+
+
+}
+
+
+
+showBalance();
+
+
+
+
+
+// Сброс баланса
+
+function resetBank(){
+
+
+
+    let pass =
+    document.getElementById("password").value;
+
+
+
+    if(pass === PASSWORD){
+
+
+
+        localStorage.setItem(
+
+            "balance",
+
+            START_BALANCE
+
+        );
+
 
 
         showBalance();
@@ -193,14 +234,17 @@ function resetBank(){
 
 
         document.getElementById("message").innerHTML =
+
         "♻️ Баланс восстановлен";
 
 
-    }
-    else{
+
+    }else{
+
 
 
         document.getElementById("message").innerHTML =
+
         "❌ Неверный пароль";
 
 
@@ -211,7 +255,8 @@ function resetBank(){
 
 
 
-// Обновление после возврата из ресторана
+
+// Обновление после ресторана
 
 window.addEventListener(
 "focus",
@@ -219,9 +264,10 @@ showBalance
 );
 
 
-</script>
+
 </script>
 
 
 </body>
+
 </html>
