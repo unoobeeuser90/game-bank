@@ -279,7 +279,7 @@ button:hover{
 
 
 <script>
-
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8AephX-pU-fQP6brxEgbDN_hEtNMbcPo-SefJN2_ZcRwFQ-NFF8vCs9h0oL3mm-GKsg/exec";
 
 let cart = [];
 
@@ -460,7 +460,23 @@ function checkout(){
 
     let now =
     new Date();
+fetch(GOOGLE_SCRIPT_URL, {
 
+    method:"POST",
+
+    body:JSON.stringify({
+
+        orderId: Math.floor(Math.random()*9000)+1000,
+
+        items: cart,
+
+        total: total,
+
+        time: new Date().toLocaleString("ru-RU")
+
+    })
+
+});
 
 
     let receipt =
