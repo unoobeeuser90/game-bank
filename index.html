@@ -71,21 +71,27 @@ button {
 
 <script>
 
+
+<script>
 const START_BALANCE = 10000;
 const PASSWORD = "1234";
 
-let balance = Number(localStorage.getItem("balance"));
+let balance = localStorage.getItem("balance");
 
-if (isNaN(balance)) {
+if (balance === null) {
     balance = START_BALANCE;
     localStorage.setItem("balance", balance);
 }
+
+balance = Number(balance);
 
 showBalance();
 
 function showBalance() {
     balance = Number(localStorage.getItem("balance")) || START_BALANCE;
-    document.getElementById("balance").innerHTML = "💰 Баланс: " + balance + " ₽";
+
+    document.getElementById("balance").innerHTML =
+        "💰 Баланс: " + balance + " ₽";
 }
 
 function resetBank() {
@@ -101,17 +107,18 @@ function resetBank() {
         showBalance();
 
         document.getElementById("message").innerHTML =
-        "♻️ Баланс восстановлен";
+            "♻️ Баланс восстановлен";
 
     } else {
 
         document.getElementById("message").innerHTML =
-        "❌ Неверный пароль";
+            "❌ Неверный пароль";
 
     }
 }
 
 window.addEventListener("focus", showBalance);
+</script>
 
 </script>
 
