@@ -15,7 +15,6 @@ body{
     color:white;
 }
 
-
 .top-bar{
     display:flex;
     justify-content:space-between;
@@ -27,13 +26,11 @@ body{
     top:0;
 }
 
-
 .logo{
     font-size:28px;
     color:#fbbf24;
     font-weight:bold;
 }
-
 
 .balance{
     font-size:22px;
@@ -41,50 +38,31 @@ body{
     font-weight:bold;
 }
 
-
-
 .container{
-
     max-width:900px;
     margin:auto;
     padding:20px;
-
 }
 
-
-
 .card{
-
     background:#1f2937;
     padding:20px;
     margin:20px 0;
     border-radius:15px;
     box-shadow:0 0 15px black;
-
 }
-
-
 
 .card h2{
-
     color:#fbbf24;
-
 }
 
-
-
 .price{
-
     color:#22c55e;
     font-size:22px;
     font-weight:bold;
-
 }
 
-
-
 button{
-
     width:100%;
     padding:12px;
     margin-top:10px;
@@ -94,97 +72,62 @@ button{
     font-size:18px;
     font-weight:bold;
     cursor:pointer;
-
 }
-
-
 
 button:hover{
-
     background:#fbbf24;
-
 }
 
-
-
 .cart{
-
     background:#374151;
     padding:20px;
     border-radius:15px;
     margin-top:30px;
-
 }
-
-
-
-.cart h2{
-
-    color:#fbbf24;
-
-}
-
-
 
 .total{
-
     font-size:24px;
     color:#22c55e;
-
 }
-
-
 
 .pay{
-
     background:#22c55e;
-
 }
-
-
 
 .clear{
-
     background:#ef4444;
     color:white;
-
 }
 
-
-
 .receipt{
-
     display:none;
     background:#374151;
     padding:20px;
     border-radius:15px;
     margin-top:20px;
-
 }
 
-
-
 .receipt-item{
-
     background:#1f2937;
     padding:10px;
     margin:5px;
     border-radius:8px;
-
 }
 
-
+.remove-btn{
+    width:auto;
+    padding:5px 10px;
+    background:#ef4444;
+    color:white;
+}
 
 .back{
-
     display:block;
     text-align:center;
     color:white;
     margin:30px;
     font-size:20px;
-
 }
-
 
 </style>
 
@@ -200,14 +143,10 @@ button:hover{
 🍽 Ресторан
 </div>
 
-
 <div class="balance">
-
 💳 Баланс:
 <span id="balance">0</span>
-
 </div>
-
 
 </div>
 
@@ -223,124 +162,69 @@ button:hover{
 
 
 <div class="card">
-
 <h2>🥯 Закуска «Филадельфия»</h2>
-
 <p>Сыр, лосось и свежие овощи.</p>
-
-<div class="price">
-500 ₽
-</div>
-
+<div class="price">500 ₽</div>
 <button onclick="addToCart('Закуска Филадельфия',500)">
 🛒 В корзину
 </button>
-
 </div>
-
-
 
 
 <div class="card">
-
 <h2>🍅 Закуска томатная</h2>
-
 <p>Томаты с зеленью и специями.</p>
-
-<div class="price">
-500 ₽
-</div>
-
+<div class="price">500 ₽</div>
 <button onclick="addToCart('Закуска томатная',500)">
 🛒 В корзину
 </button>
-
 </div>
-
-
 
 
 <div class="card">
-
 <h2>🧀 Ассорти сыров и колбас</h2>
-
 <p>Большое ассорти деликатесов.</p>
-
-<div class="price">
-2000 ₽
-</div>
-
+<div class="price">2000 ₽</div>
 <button onclick="addToCart('Ассорти сыров и колбас',2000)">
 🛒 В корзину
 </button>
-
 </div>
-
-
 
 
 <div class="card">
-
 <h2>🍳 Яичница</h2>
-
 <p>Домашняя яичница.</p>
-
-<div class="price">
-1500 ₽
-</div>
-
+<div class="price">1500 ₽</div>
 <button onclick="addToCart('Яичница',1500)">
 🛒 В корзину
 </button>
-
 </div>
-
-
 
 
 <div class="card">
-
 <h2>🍵 Чай</h2>
-
 <p>Чёрный или зелёный чай.</p>
-
-<div class="price">
-1000 ₽
-</div>
-
+<div class="price">1000 ₽</div>
 <button onclick="addToCart('Чай',1000)">
 🛒 В корзину
 </button>
-
 </div>
-
-
 
 
 <div class="card">
-
 <h2>🥤 Лимонад</h2>
-
 <p>Освежающий домашний лимонад.</p>
-
-<div class="price">
-1000 ₽
-</div>
-
+<div class="price">1000 ₽</div>
 <button onclick="addToCart('Лимонад',1000)">
 🛒 В корзину
 </button>
-
 </div>
-
 
 
 
 <div class="cart">
 
-
 <h2>🛒 Корзина</h2>
-
 
 <div id="cartItems">
 Корзина пустая
@@ -367,17 +251,16 @@ button:hover{
 
 
 
+
 <div class="receipt" id="receipt">
 
 <h2>🧾 Чек заказа</h2>
 
 <div id="receiptText"></div>
 
-
 <button onclick="closeReceipt()">
 ❌ Закрыть чек
 </button>
-
 
 </div>
 
@@ -392,7 +275,11 @@ button:hover{
 <a class="back" href="index.html">
 ⬅ Вернуться в банк
 </a>
-    <script>
+
+
+
+<script>
+
 
 let cart = [];
 
@@ -400,18 +287,14 @@ let total = 0;
 
 
 
-// Загрузка баланса из банка
-
 function updateBalance(){
 
     let balance =
-    Number(localStorage.getItem("balance")) || 10000;
+    Number(localStorage.getItem("balance"));
 
-
-    localStorage.setItem(
-        "balance",
-        balance
-    );
+    if(isNaN(balance)){
+        balance = 0;
+    }
 
 
     document.getElementById("balance").innerHTML =
@@ -420,55 +303,41 @@ function updateBalance(){
 }
 
 
-
 updateBalance();
 
 
 
 
-// Добавление товара в корзину
 
-function addToCart(name, price){
-
+function addToCart(name,price){
 
     cart.push({
-
         name:name,
-
         price:price
-
     });
 
-
     updateCart();
-
 
 }
 
 
 
 
-// Отображение корзины
 
 function updateCart(){
-
 
     let box =
     document.getElementById("cartItems");
 
 
-    box.innerHTML = "";
+    box.innerHTML="";
 
-    total = 0;
-
-
-
-    if(cart.length === 0){
+    total=0;
 
 
-        box.innerHTML =
-        "🛒 Корзина пустая";
+    if(cart.length===0){
 
+        box.innerHTML="🛒 Корзина пустая";
 
     }
 
@@ -477,309 +346,192 @@ function updateCart(){
     cart.forEach(function(item,index){
 
 
-
         let div =
         document.createElement("div");
 
 
-
-        div.className =
-        "receipt-item";
-
+        div.className="receipt-item";
 
 
         div.innerHTML =
 
-        item.name +
-
-        " — " +
-
-        item.price +
-
+        item.name+
+        " — "+
+        item.price+
         " ₽ " +
 
-        "<button onclick='removeItem("+index+")'>❌</button>";
+        "<button class='remove-btn' onclick='removeItem("+index+")'>❌</button>";
 
 
 
         box.appendChild(div);
 
 
-
         total += item.price;
 
 
-
     });
-
 
 
     document.getElementById("total").innerHTML =
     total;
 
 
-
 }
 
 
 
 
-// Удаление одного товара
 
 function removeItem(index){
 
-
     cart.splice(index,1);
 
-
     updateCart();
-
 
 }
 
 
 
 
-// Очистка корзины
 
 function clearCart(){
 
-
-    cart = [];
-
+    cart=[];
 
     updateCart();
-
 
 }
 
 
 
 
-
-// Оплата заказа
 
 function checkout(){
 
 
-
-    if(total === 0){
-
+    if(total===0){
 
         alert("🛒 Корзина пустая");
 
-
         return;
-
 
     }
 
 
 
-
-
     let balance =
-
     Number(localStorage.getItem("balance")) || 0;
-
 
 
 
     if(balance < total){
 
-
         alert("❌ Недостаточно денег");
-
 
         return;
 
-
     }
-
-
 
 
 
     balance -= total;
 
 
-
     localStorage.setItem(
-
         "balance",
-
         balance
-
     );
 
 
-
-
-
-    // звук оплаты
 
     let sound =
     document.getElementById("paySound");
 
 
-
     if(sound){
 
-        sound.play();
+        sound.play().catch(()=>{});
 
     }
 
 
 
 
-
-    // создание чека
-
-
-    let date =
+    let now =
     new Date();
-
-
-
-    let time =
-    date.toLocaleString("ru-RU");
-
-
-
-    let orderNumber =
-    Math.floor(Math.random()*9000)+1000;
-
 
 
 
     let receipt =
 
-    "<h3>🎮 Заказ №" +
-
-    orderNumber +
-
-    "</h3>";
-
-
+    "<h3>🎮 Заказ №"+
+    (Math.floor(Math.random()*9000)+1000)
+    +"</h3>";
 
 
     receipt +=
-
-    "<p>🕒 Время: " +
-
-    time +
-
-    "</p>";
-
-
-
-    receipt += "<hr>";
-
+    "<p>🕒 "+
+    now.toLocaleString("ru-RU")
+    +"</p><hr>";
 
 
 
     cart.forEach(function(item){
 
-
-
         receipt +=
 
         "<div class='receipt-item'>🍽 "
-
-        +
-
-        item.name
-
-        +
-
-        " — "
-
-        +
-
-        item.price
-
-        +
-
+        +item.name+
+        " — "+
+        item.price+
         " ₽</div>";
-
-
 
     });
 
 
 
-
-    receipt += "<hr>";
-
-
-
-
     receipt +=
 
-    "<h2>💰 Итого: "
-
-    +
-
-    total
-
-    +
-
+    "<hr><h2>💰 Итого: "
+    +total+
     " ₽</h2>";
 
 
 
-
-
-
     document.getElementById("receiptText").innerHTML =
-
     receipt;
 
 
-
-
     document.getElementById("receipt").style.display =
-
     "block";
 
 
 
-
-
-    cart = [];
-
+    cart=[];
 
 
     updateCart();
 
-
     updateBalance();
 
 
-
 }
 
 
 
 
-
-// Закрытие чека
 
 function closeReceipt(){
 
-
     document.getElementById("receipt").style.display =
-
     "none";
 
-
 }
-
 
 
 </script>
 
 
 </body>
-
 </html>
