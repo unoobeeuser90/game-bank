@@ -1,163 +1,214 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
 <meta charset="UTF-8">
-<title>Кухня</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>👨‍🍳 Кухня</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-body {
-    font-family: Arial;
-    background: #222;
-    color: white;
-    text-align: center;
+
+body{
+
+background:#111827;
+font-family:Arial;
+color:white;
+margin:0;
+
 }
 
-h1 {
-    font-size: 40px;
+header{
+
+background:#1f2937;
+padding:20px;
+text-align:center;
+font-size:35px;
+font-weight:bold;
+color:#fbbf24;
+
 }
 
-.order {
-    background: #333;
-    margin: 15px auto;
-    padding: 20px;
-    width: 300px;
-    border-radius: 15px;
-    border: 2px solid orange;
+#orders{
+
+max-width:900px;
+margin:auto;
+padding:20px;
+
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 18px;
+.card{
+
+background:#1f2937;
+padding:20px;
+margin:20px 0;
+border-radius:15px;
+box-shadow:0 0 15px black;
+
 }
+
+.card h2{
+
+color:#22c55e;
+
+}
+
+button{
+
+width:100%;
+padding:12px;
+margin-top:15px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:#22c55e;
+cursor:pointer;
+
+}
+
+button:hover{
+
+background:#16a34a;
+
+}
+
+.time{
+
+color:#9ca3af;
+
+}
+
+.total{
+
+font-size:22px;
+color:#fbbf24;
+
+}
+
+.empty{
+
+text-align:center;
+margin-top:50px;
+font-size:25px;
+
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h1>🍳 Кухня</h1>
+<header>
 
-<h2 id="status">
-Ожидание заказов...
-</h2>
+👨‍🍳 Кухня
 
-<div id="orders"></div>
+</header>
 
+<div id="orders">
 
-<script type="module">
+<div class="empty">
 
+Загрузка...
 
-// Подключаем Supabase
+</div>
 
-import { createClient } 
-from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+</div>
+    <script>
 
+const supabase = window.supabase.createClient(
 
-// ВСТАВЬ СВОИ ДАННЫЕ
+"https://kvfytzxnlqxytqcsxkzq.supabase.co",
 
-const supabase = createClient(
-
-"https://kvfytzxnlqxytqcsxkzq.supabase.co/rest/v1/",
-
-"sb_publishable_HLypTsrxK_uko9oa585o3Q_1QqNBqmd"
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2Znl0enhubHF4eXRxY3N4a3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzNzE3NTgsImV4cCI6MjA5OTk0Nzc1OH0.dlVGtE359MBEL-P53p6XD7u1js3Bq1FcFQI6-ifBZsk"
 
 );
 
+async function loadOrders(){
 
+    const { data, error } = await supabase
+        .from("orders")
+        .select("*")
+        .eq("status","Новый")
+        .order("created_at",{ascending:true});
 
-// функция показа заказа
+    const box = document.getElementById("orders");
 
-function showOrder(order){
+    box.innerHTML = "";
 
-let box = document.createElement("div");
+    if(error){
 
-box.className="order";
+        box.innerHTML = "<div class='empty'>Ошибка загрузки заказов</div>";
 
+        console.error(error);
 
-box.innerHTML = `
+        return;
 
-<h2>🔔 Новый заказ</h2>
+    }
 
-<p>🍔 Блюдо: ${order.food}</p>
+    if(data.length===0){
 
-<p>💰 Цена: ${order.price} монет</p>
+        box.innerHTML = "<div class='empty'>🍽 Заказов пока нет</div>";
 
-<p>📌 Статус: ${order.status}</p>
+        return;
 
-`;
+    }
 
+    data.forEach(function(order){
 
+        let card = document.createElement("div");
 
-document
-.getElementById("orders")
-.appendChild(box);
+        card.className="card";
 
+        card.innerHTML =
 
+        "<h2>Заказ №"+order.order_number+"</h2>"+
 
-document.getElementById("status").innerHTML =
-"Есть новые заказы! 🔥";
+        "<p>"+order.items.replaceAll(",", "<br>🍽 ")+"</p>"+
 
+        "<p class='total'>💰 "+order.total+" ₽</p>"+
 
-}
+        "<p class='time'>🕒 "+
+        new Date(order.created_at).toLocaleString("ru-RU")+
+        "</p>"+
 
+        "<button onclick='finishOrder("+order.id+")'>✅ Готово</button>";
 
+        box.appendChild(card);
 
-// Получаем старые заказы
-
-let { data, error } = await supabase
-.from("orders")
-.select("*")
-.order("id",{ascending:false});
-
-
-
-if(data){
-
-data.forEach(showOrder);
-
-}
-
-
-
-// Слушаем новые заказы
-
-supabase
-
-.channel("orders-channel")
-
-.on(
-
-"postgres_changes",
-
-{
-
-event:"INSERT",
-
-schema:"public",
-
-table:"orders"
-
-},
-
-(payload)=>{
-
-
-console.log("Новый заказ:",payload.new);
-
-
-showOrder(payload.new);
-
+    });
 
 }
 
-)
+async function finishOrder(id){
 
-.subscribe();
+    const { error } = await supabase
 
+        .from("orders")
 
+        .delete()
+
+        .eq("id",id);
+
+    if(error){
+
+        alert("Ошибка удаления");
+
+        return;
+
+    }
+
+    loadOrders();
+
+}
+
+loadOrders();
+
+setInterval(loadOrders,2000);
 
 </script>
-
 
 </body>
 </html>
