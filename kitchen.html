@@ -159,7 +159,7 @@ async function loadOrders(){
         return;
 
     }
-
+    
     data.forEach(function(order){
 
         let card = document.createElement("div");
@@ -170,7 +170,7 @@ async function loadOrders(){
 
         "<h2>Заказ №"+order.order_number+"</h2>"+
 
-        "<p>"+order.items.replaceAll(",", "<br>🍽 ")+"</p>"+
+        "<p>"+order.food.replaceAll(",", "<br>🍽 ")+"</p>"+
 
         "<p class='total'>💰 "+order.total+" ₽</p>"+
 
