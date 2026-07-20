@@ -407,32 +407,68 @@ updateCart();
 
 // отправка заказа на кухню
 
-async function sendOrder(food,price){
+async function sendOrder(food, price) {
 
+    console.log("[sendOrder] START");
+    console.log("[sendOrder] Данные:", {
+        food: food,
+        price: price
+    });
 
-const {data,error}=await supabase
-.from("orders")
-.insert({
-food: food,
-price: price,
-status: "new"
-});
+    const startTime = Date.now();
 
+    try {
 
-if(error){
+        console.log("[sendOrder] Отправляю запрос в Supabase...");
 
-console.log("ОШИБКА SUPABASE:", error);
-alert("Here");
+        const { data, error } = await supabase
+            .from("orders")
+            .insert({
+                food: food,
+                price: price,
+                status: "new"
+            })
+            .select();
 
+        const requestTime = Date.now() - startTime;
 
-}
-else{
+        console.log(`[sendOrder] Supabase ответил за ${requestTime} ms`);
 
-console.log("Заказ отправлен:", data);
+        if (error) {
 
-}
+            console.error("[sendOrder] ОШИБКА SUPABASE");
+            console.error("message:", error.message);
+            console.error("code:", error.code);
+            console.error("details:", error.details);
+            console.error("hint:", error.hint);
+            console.error("full error:", error);
 
+            alert("Supabase error: " + error.message);
 
+            return;
+        }
+
+        console.log("[sendOrder] INSERT успешен");
+        console.log("[sendOrder] Ответ БД:", data);
+
+    } catch (error) {
+
+        const requestTime = Date.now() - startTime;
+
+        console.error(
+            `[sendOrder] Запрос завершился исключением через ${requestTime} ms`
+        );
+
+        console.error("[sendOrder] Возможная сетевая ошибка / Supabase недоступен");
+        console.error(error);
+
+        alert("Network/API error: " + error.message);
+
+    } finally {
+
+        console.log("[sendOrder] END");
+
+    }
 }
 
 
