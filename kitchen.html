@@ -135,7 +135,7 @@ async function loadOrders(){
     const { data, error } = await supabase
         .from("orders")
         .select("*")
-        .eq("status","Новый")
+        .eq("status","New")
         .order("created_at",{ascending:true});
 
     const box = document.getElementById("orders");
