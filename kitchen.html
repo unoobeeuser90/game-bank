@@ -122,8 +122,7 @@ font-size:25px;
 
 import { createClient } 
 from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-const supabase = window.supabase(
+const supabase = createClient(
 
 "https://kvfytzxnlqxytqcsxkzq.supabase.co",
 
