@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🎰 Однорукий бандит</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="machine">
+
+    <h1>🎰 SLOT MACHINE</h1>
+
+    <div class="balance">
+        💰 Баланс:
+        <span id="balance">0</span> ₽
+    </div>
+
+    <div class="bet">
+
+        Ставка
+
+        <input
+            id="bet"
+            type="number"
+            value="100"
+            min="10"
+            step="10">
+
+    </div>
+
+    <div class="window">
+
+        <div class="reel" id="r1">🍒</div>
+
+        <div class="reel" id="r2">🍋</div>
+
+        <div class="reel" id="r3">⭐</div>
+
+    </div>
+
+    <div id="message">
+        Потяни ручку ↓
+    </div>
+
+    <div class="lever">
+
+        <div id="stick"></div>
+
+        <div id="knob"></div>
+
+    </div>
+
+</div>
+
+<a href="index.html" class="back">
+⬅ Назад в банк
+</a>
+
+<audio id="spinSound" src="sounds/spin.mp3"></audio>
+<audio id="stopSound" src="sounds/stop.mp3"></audio>
+<audio id="winSound" src="sounds/win.mp3"></audio>
+<audio id="jackpotSound" src="sounds/jackpot.mp3"></audio>
+
+<script src="script.js"></script>
+
+</body>
+</html>
