@@ -1,5 +1,5 @@
-// ===== ОДНОРУКИЙ БАНДИТ =====
-// Общий баланс с банком через localStorage
+// 🎰 ОДНОРУКИЙ БАНДИТ
+// Общий баланс с банком
 
 const reels = [
     document.getElementById("r1"),
@@ -19,8 +19,6 @@ const winSound = document.getElementById("winSound");
 const jackpotSound = document.getElementById("jackpotSound");
 
 
-// Символы автомата
-
 const symbols = [
     "🍒",
     "🍋",
@@ -29,6 +27,9 @@ const symbols = [
     "🔔",
     "7️⃣"
 ];
+
+
+let spinning = false;
 
 
 // ===== БАЛАНС =====
@@ -45,11 +46,9 @@ function getBalance(){
             "balance",
             balance
         );
-
     }
 
     return Number(balance);
-
 }
 
 
@@ -67,7 +66,8 @@ function showBalance(){
 
     if(balanceText){
 
-        balanceText.innerHTML = getBalance();
+        balanceText.innerHTML =
+        getBalance();
 
     }
 
@@ -83,11 +83,6 @@ window.addEventListener(
 );
 
 
-// ===== СОСТОЯНИЕ ИГРЫ =====
-
-let spinning = false;
-
-
 
 // ===== СЛУЧАЙНЫЙ СИМВОЛ =====
 
@@ -95,7 +90,7 @@ function randomSymbol(){
 
     return symbols[
         Math.floor(
-            Math.random() * symbols.length
+            Math.random()*symbols.length
         )
     ];
 
@@ -103,48 +98,33 @@ function randomSymbol(){
 
 
 
-// ===== ЗАПУСК ИГРЫ =====
+// ===== ЗАПУСК =====
 
 function spin(){
 
-
-    if(spinning){
-        return;
-    }
+    if(spinning) return;
 
 
-    let bet = Number(
-        betInput.value
-    );
-
-
-    if(bet <= 0){
-
-        message.innerHTML =
-        "Введите ставку";
-
-        return;
-
-    }
+    let bet =
+    Number(betInput.value);
 
 
 
-    let balance = getBalance();
+    let balance =
+    getBalance();
 
 
 
     if(balance < bet){
 
         message.innerHTML =
-        "❌ Недостаточно денег";
+        "❌ Нет денег";
 
         return;
 
     }
 
 
-
-    // списываем ставку
 
     balance -= bet;
 
@@ -154,25 +134,22 @@ function spin(){
 
 
 
-    spinning = true;
+    spinning=true;
 
 
     message.innerHTML =
-    "🎰 Крутится...";
+    "🎰 Крутим...";
 
 
+    reels.forEach(function(r){
 
-    reels.forEach(function(reel){
-
-        reel.classList.add("spin");
+        r.classList.add("spin");
 
     });
 
 
 
     if(spinSound){
-
-        spinSound.currentTime = 0;
 
         spinSound.play();
 
@@ -185,36 +162,36 @@ function spin(){
         2500
     );
 
-
 }
-// ===== ОСТАНОВКА БАРАБАНОВ =====
+
+
+
+// ===== ОСТАНОВКА =====
 
 function stopSpin(){
 
 
-    reels.forEach(function(reel){
+    reels.forEach(function(r){
 
-        reel.classList.remove("spin");
+        r.classList.remove("spin");
 
     });
 
 
 
-    let a = randomSymbol();
-    let b = randomSymbol();
-    let c = randomSymbol();
+    let a=randomSymbol();
+    let b=randomSymbol();
+    let c=randomSymbol();
 
 
 
-    reels[0].innerHTML = a;
-    reels[1].innerHTML = b;
-    reels[2].innerHTML = c;
+    reels[0].innerHTML=a;
+    reels[1].innerHTML=b;
+    reels[2].innerHTML=c;
 
 
 
     if(stopSound){
-
-        stopSound.currentTime = 0;
 
         stopSound.play();
 
@@ -222,33 +199,29 @@ function stopSpin(){
 
 
 
-    let bet = Number(
-        betInput.value
-    );
+    let bet =
+    Number(betInput.value);
 
 
-    let balance = getBalance();
+    let balance =
+    getBalance();
 
 
 
-    // ===== ДЖЕКПОТ =====
+    let win=0;
+
+
 
     if(
-        a === "7️⃣" &&
-        b === "7️⃣" &&
-        c === "7️⃣"
+        a==="7️⃣" &&
+        b==="7️⃣" &&
+        c==="7️⃣"
     ){
 
+        win=bet*20;
 
-        let win = bet * 20;
-
-
-        balance += win;
-
-
-        message.innerHTML =
-        "💎 ДЖЕКПОТ! +" + win + " ₽";
-
+        message.innerHTML=
+        "💎 ДЖЕКПОТ +"+win+" ₽";
 
 
         if(jackpotSound){
@@ -257,90 +230,56 @@ function stopSpin(){
 
         }
 
-
-
-        if(navigator.vibrate){
-
-            navigator.vibrate(
-                [200,100,200,100,200]
-            );
-
-        }
-
-
     }
 
-
-
-    // ===== ТРИ ОДИНАКОВЫХ =====
 
     else if(
-        a === b &&
-        b === c
+        a===b &&
+        b===c
     ){
 
+        win=bet*5;
 
-        let win = bet * 5;
-
-
-        balance += win;
-
-
-        message.innerHTML =
-        "🎉 Победа! +" + win + " ₽";
-
-
-
-        if(winSound){
-
-            winSound.play();
-
-        }
+        message.innerHTML=
+        "🎉 Победа +"+win+" ₽";
 
 
     }
 
-
-
-    // ===== ДВА ОДИНАКОВЫХ =====
 
     else if(
-        a === b ||
-        a === c ||
-        b === c
+        a===b ||
+        a===c ||
+        b===c
     ){
 
+        win=bet*2;
 
-        let win = bet * 2;
-
-
-        balance += win;
-
-
-        message.innerHTML =
-        "😊 Выигрыш +" + win + " ₽";
-
-
-
-        if(winSound){
-
-            winSound.play();
-
-        }
-
+        message.innerHTML=
+        "😊 Выигрыш +"+win+" ₽";
 
     }
 
-
-
-    // ===== ПРОИГРЫШ =====
 
     else{
 
+        message.innerHTML=
+        "😢 Проигрыш";
 
-        message.innerHTML =
-        "😢 Не повезло";
+    }
 
+
+
+    if(win>0){
+
+        balance+=win;
+
+
+        if(winSound){
+
+            winSound.play();
+
+        }
 
     }
 
@@ -351,124 +290,107 @@ function stopSpin(){
     showBalance();
 
 
-    spinning = false;
-
+    spinning=false;
 
 }
-// ===== РУЧКА АВТОМАТА =====
-
-let dragging = false;
-let startY = 0;
 
 
-// нажали на ручку
+
+// ===== РУЧКА =====
+
+let dragging=false;
+
+let startY=0;
+
+
 
 knob.addEventListener(
-    "pointerdown",
-    function(e){
+"pointerdown",
+function(e){
 
-        if(spinning){
-            return;
-        }
+    if(spinning) return;
 
 
-        dragging = true;
+    dragging=true;
 
-        startY = e.clientY;
-
-
-        knob.setPointerCapture(
-            e.pointerId
-        );
+    startY=e.clientY;
 
 
-    }
-);
+    knob.setPointerCapture(
+        e.pointerId
+    );
+
+});
 
 
-
-// двигаем ручку
 
 knob.addEventListener(
-    "pointermove",
-    function(e){
+"pointermove",
+function(e){
 
 
-        if(!dragging){
-            return;
-        }
+    if(!dragging) return;
 
 
-        let move =
-        e.clientY - startY;
-
-
-
-        if(move < 0){
-            move = 0;
-        }
-
-
-        if(move > 120){
-            move = 120;
-        }
+    let y =
+    e.clientY-startY;
 
 
 
-        knob.style.top =
-        move + "px";
+    if(y<0)y=0;
 
-
-    }
-);
+    if(y>120)y=120;
 
 
 
-// отпустили ручку
+    knob.style.transform =
+    "translateY("+y+"px)";
+
+
+});
+
+
 
 knob.addEventListener(
-    "pointerup",
-    function(){
+"pointerup",
+function(){
 
 
-        if(
-            Number(
-                knob.style.top.replace("px","")
-            ) > 80
-        ){
-
-
-            spin();
-
-
-        }
+    let y =
+    knob.style.transform;
 
 
 
-        dragging = false;
+    if(
+        y.includes("120") ||
+        y.includes("100") ||
+        y.includes("90")
+    ){
 
-
-
-        knob.style.transition =
-        "0.3s";
-
-
-
-        knob.style.top =
-        "0px";
-
-
-
-        setTimeout(
-            function(){
-
-                knob.style.transition =
-                "";
-
-            },
-            300
-        );
-
+        spin();
 
     }
-);
+
+
+
+    dragging=false;
+
+
+
+    knob.style.transition=
+    "0.3s";
+
+
+    knob.style.transform=
+    "translateY(0px)";
+
+
+
+    setTimeout(function(){
+
+        knob.style.transition="";
+
+    },300);
+
+
+});
