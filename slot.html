@@ -1,487 +1,122 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>🎰 Однорукий бандит</title>
 
 <style>
-
 body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
     background:#111827;
     color:white;
+    text-align:center;
     font-family:Arial;
 }
 
-
-.machine{
-
-    width:350px;
-    background:#c62828;
-    border:8px solid gold;
-    border-radius:25px;
-    padding:25px;
-    text-align:center;
-    box-shadow:0 0 30px gold;
-
+#slots{
+    font-size:70px;
+    margin:30px;
 }
-
-
-h1{
-    color:gold;
-}
-
-
-#balance{
-
-    font-size:28px;
-    color:#22c55e;
-
-}
-
-
-.window{
-
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    background:#111;
-    padding:20px;
-    border-radius:15px;
-
-}
-
-
-.reel{
-
-    width:80px;
-    height:80px;
-    background:white;
-    color:black;
-    font-size:50px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:10px;
-
-}
-
-
-.spin{
-
-    animation:move .1s infinite;
-
-}
-
-
-@keyframes move{
-
-    50%{
-        transform:translateY(8px);
-    }
-
-}
-
-
-
-input{
-
-    font-size:20px;
-    width:100px;
-    text-align:center;
-
-}
-
-
-
-/* ручка */
-
-.lever{
-
-    margin:20px auto;
-    width:60px;
-    height:180px;
-    position:relative;
-
-}
-
-
-#stick{
-
-    position:absolute;
-    left:26px;
-    width:8px;
-    height:150px;
-    background:silver;
-
-}
-
-
-#knob{
-
-    position:absolute;
-    top:0;
-    left:5px;
-
-    width:50px;
-    height:50px;
-
-    background:red;
-    border-radius:50%;
-
-    border:4px solid white;
-
-    touch-action:none;
-
-    cursor:pointer;
-
-}
-
 
 button{
+    font-size:22px;
+    padding:12px 30px;
+}
 
-    padding:12px 25px;
+input{
     font-size:20px;
-    border-radius:10px;
-    cursor:pointer;
-
+    width:120px;
 }
-
-
-a{
-
-    margin-top:20px;
-    color:white;
-
-}
-
 </style>
-
 </head>
-
-
 <body>
 
+<h1>🎰 Однорукий бандит</h1>
 
-<div class="machine">
-
-
-<h1>🎰 SLOT</h1>
-
-
-<h2>
-💰 Баланс:
-<span id="balance">
-0
-</span> ₽
-</h2>
-
-
+<h2 id="balance"></h2>
 
 <p>
-
-Ставка
-
-<input id="bet" value="100" type="number">
-
+Ставка:
+<input id="bet" type="number" value="100" min="1">
 </p>
 
+<div id="slots">🍒 🍋 🍇</div>
 
+<button onclick="spin()">Крутить</button>
 
-<div class="window">
-
-<div class="reel" id="r1">🍒</div>
-<div class="reel" id="r2">🍋</div>
-<div class="reel" id="r3">⭐</div>
-
-</div>
-
-
-
-<p id="message">
-Потяни ручку
-</p>
-
-
-
-<div class="lever">
-
-<div id="stick"></div>
-
-<div id="knob"></div>
-
-</div>
-
-
-
-</div>
-
-
-
-<a href="index.html">
-⬅ Назад в банк
-</a>
-
-
-
+<p id="result"></p>
 
 <script>
 
-
-let symbols=[
-"🍒",
-"🍋",
-"🍇",
-"⭐",
-"🔔",
-"7️⃣"
-];
-
-
-let r1=document.getElementById("r1");
-let r2=document.getElementById("r2");
-let r3=document.getElementById("r3");
-
-
-let balance=document.getElementById("balance");
-
-let message=document.getElementById("message");
-
-let bet=document.getElementById("bet");
-
-
-let knob=document.getElementById("knob");
-
-let spinning=false;
-
-
-
-// баланс общий с банком
-
-function getMoney(){
-
-let m=localStorage.getItem("balance");
-
-if(m===null){
-
-m=10000;
-
-localStorage.setItem("balance",m);
-
+function getBalance(){
+    return Number(localStorage.getItem("balance") || 10000);
 }
 
-return Number(m);
-
+function setBalance(value){
+    localStorage.setItem("balance", value);
 }
 
-
-
-function showMoney(){
-
-balance.innerHTML=getMoney();
-
+function showBalance(){
+    document.getElementById("balance").innerHTML =
+        "💰 Баланс: " + getBalance() + " ₽";
 }
 
+showBalance();
 
-showMoney();
+const symbols = ["🍒","🍋","🍇","⭐","7️⃣"];
 
-
-
-function random(){
-
-return symbols[
-Math.floor(Math.random()*symbols.length)
-];
-
+function randomSymbol(){
+    return symbols[Math.floor(Math.random()*symbols.length)];
 }
 
+function spin(){
 
+    let bet = Number(document.getElementById("bet").value);
+    let balance = getBalance();
 
+    if(bet <= 0){
+        alert("Введите ставку");
+        return;
+    }
 
-function play(){
+    if(balance < bet){
+        alert("Недостаточно денег!");
+        return;
+    }
 
+    // снимаем ставку
+    balance -= bet;
 
-if(spinning)return;
+    let a = randomSymbol();
+    let b = randomSymbol();
+    let c = randomSymbol();
 
+    document.getElementById("slots").innerHTML =
+        a + " " + b + " " + c;
 
-let b=Number(bet.value);
+    if(a === b && b === c){
+        let win = bet * 5;
+        balance += win;
 
+        document.getElementById("result").innerHTML =
+            "🎉 Джекпот! +" + win + " ₽";
+    }
+    else if(a === b || b === c || a === c){
+        let win = bet * 2;
+        balance += win;
 
-let money=getMoney();
+        document.getElementById("result").innerHTML =
+            "😊 Выигрыш +" + win + " ₽";
+    }
+    else{
+        document.getElementById("result").innerHTML =
+            "😢 Проигрыш -" + bet + " ₽";
+    }
 
-
-
-if(money<b){
-
-message.innerHTML="❌ Нет денег";
-
-return;
-
+    setBalance(balance);
+    showBalance();
 }
-
-
-
-money-=b;
-
-localStorage.setItem(
-"balance",
-money
-);
-
-
-showMoney();
-
-
-spinning=true;
-
-
-message.innerHTML="🎰 Крутим...";
-
-
-[r1,r2,r3].forEach(x=>
-x.classList.add("spin")
-);
-
-
-
-setTimeout(()=>{
-
-
-[r1,r2,r3].forEach(x=>
-x.classList.remove("spin")
-);
-
-
-
-let a=random();
-let b=random();
-let c=random();
-
-
-r1.innerHTML=a;
-r2.innerHTML=b;
-r3.innerHTML=c;
-
-
-
-let win=0;
-
-
-if(a==b && b==c){
-
-win=Number(bet.value)*5;
-
-}
-
-
-if(a=="7️⃣"&&b=="7️⃣"&&c=="7️⃣"){
-
-win=Number(bet.value)*20;
-
-message.innerHTML="💎 ДЖЕКПОТ!";
-
-}
-
-
-else if(win>0){
-
-message.innerHTML="🎉 Победа +"+win+" ₽";
-
-}
-
-else{
-
-message.innerHTML="😢 Проигрыш";
-
-}
-
-
-
-localStorage.setItem(
-"balance",
-getMoney()+win
-);
-
-
-showMoney();
-
-
-spinning=false;
-
-
-},2000);
-
-
-
-}
-
-
-
-// ручка
-
-let start=0;
-
-let moving=false;
-
-
-
-knob.onpointerdown=function(e){
-
-moving=true;
-
-start=e.clientY;
-
-};
-
-
-
-knob.onpointermove=function(e){
-
-if(!moving)return;
-
-
-let y=e.clientY-start;
-
-
-if(y<0)y=0;
-
-if(y>100)y=100;
-
-
-knob.style.top=y+"px";
-
-};
-
-
-
-knob.onpointerup=function(){
-
-
-moving=false;
-
-
-if(parseInt(knob.style.top)>70){
-
-play();
-
-}
-
-
-knob.style.top="0px";
-
-
-};
 
 </script>
-
 
 </body>
 </html>
