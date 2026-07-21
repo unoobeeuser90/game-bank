@@ -1,72 +1,487 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>🎰 Однорукий бандит</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:#111827;
+    color:white;
+    font-family:Arial;
+}
+
+
+.machine{
+
+    width:350px;
+    background:#c62828;
+    border:8px solid gold;
+    border-radius:25px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 0 30px gold;
+
+}
+
+
+h1{
+    color:gold;
+}
+
+
+#balance{
+
+    font-size:28px;
+    color:#22c55e;
+
+}
+
+
+.window{
+
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    background:#111;
+    padding:20px;
+    border-radius:15px;
+
+}
+
+
+.reel{
+
+    width:80px;
+    height:80px;
+    background:white;
+    color:black;
+    font-size:50px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+
+}
+
+
+.spin{
+
+    animation:move .1s infinite;
+
+}
+
+
+@keyframes move{
+
+    50%{
+        transform:translateY(8px);
+    }
+
+}
+
+
+
+input{
+
+    font-size:20px;
+    width:100px;
+    text-align:center;
+
+}
+
+
+
+/* ручка */
+
+.lever{
+
+    margin:20px auto;
+    width:60px;
+    height:180px;
+    position:relative;
+
+}
+
+
+#stick{
+
+    position:absolute;
+    left:26px;
+    width:8px;
+    height:150px;
+    background:silver;
+
+}
+
+
+#knob{
+
+    position:absolute;
+    top:0;
+    left:5px;
+
+    width:50px;
+    height:50px;
+
+    background:red;
+    border-radius:50%;
+
+    border:4px solid white;
+
+    touch-action:none;
+
+    cursor:pointer;
+
+}
+
+
+button{
+
+    padding:12px 25px;
+    font-size:20px;
+    border-radius:10px;
+    cursor:pointer;
+
+}
+
+
+a{
+
+    margin-top:20px;
+    color:white;
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
+
 <div class="machine">
 
-    <h1>🎰 SLOT MACHINE</h1>
 
-    <div class="balance">
-        💰 Баланс:
-        <span id="balance">0</span> ₽
-    </div>
+<h1>🎰 SLOT</h1>
 
-    <div class="bet">
 
-        Ставка
+<h2>
+💰 Баланс:
+<span id="balance">
+0
+</span> ₽
+</h2>
 
-        <input
-            id="bet"
-            type="number"
-            value="100"
-            min="10"
-            step="10">
 
-    </div>
 
-    <div class="window">
+<p>
 
-        <div class="reel" id="r1">🍒</div>
+Ставка
 
-        <div class="reel" id="r2">🍋</div>
+<input id="bet" value="100" type="number">
 
-        <div class="reel" id="r3">⭐</div>
+</p>
 
-    </div>
 
-    <div id="message">
-        Потяни ручку ↓
-    </div>
 
-    <div class="lever">
+<div class="window">
 
-        <div id="stick"></div>
-
-        <div id="knob"></div>
-
-    </div>
+<div class="reel" id="r1">🍒</div>
+<div class="reel" id="r2">🍋</div>
+<div class="reel" id="r3">⭐</div>
 
 </div>
 
-<a href="index.html" class="back">
+
+
+<p id="message">
+Потяни ручку
+</p>
+
+
+
+<div class="lever">
+
+<div id="stick"></div>
+
+<div id="knob"></div>
+
+</div>
+
+
+
+</div>
+
+
+
+<a href="index.html">
 ⬅ Назад в банк
 </a>
 
-<audio id="spinSound" src="sounds/spin.mp3"></audio>
-<audio id="stopSound" src="sounds/stop.mp3"></audio>
-<audio id="winSound" src="sounds/win.mp3"></audio>
-<audio id="jackpotSound" src="sounds/jackpot.mp3"></audio>
 
-<script src="script.js"></script>
+
+
+<script>
+
+
+let symbols=[
+"🍒",
+"🍋",
+"🍇",
+"⭐",
+"🔔",
+"7️⃣"
+];
+
+
+let r1=document.getElementById("r1");
+let r2=document.getElementById("r2");
+let r3=document.getElementById("r3");
+
+
+let balance=document.getElementById("balance");
+
+let message=document.getElementById("message");
+
+let bet=document.getElementById("bet");
+
+
+let knob=document.getElementById("knob");
+
+let spinning=false;
+
+
+
+// баланс общий с банком
+
+function getMoney(){
+
+let m=localStorage.getItem("balance");
+
+if(m===null){
+
+m=10000;
+
+localStorage.setItem("balance",m);
+
+}
+
+return Number(m);
+
+}
+
+
+
+function showMoney(){
+
+balance.innerHTML=getMoney();
+
+}
+
+
+showMoney();
+
+
+
+function random(){
+
+return symbols[
+Math.floor(Math.random()*symbols.length)
+];
+
+}
+
+
+
+
+function play(){
+
+
+if(spinning)return;
+
+
+let b=Number(bet.value);
+
+
+let money=getMoney();
+
+
+
+if(money<b){
+
+message.innerHTML="❌ Нет денег";
+
+return;
+
+}
+
+
+
+money-=b;
+
+localStorage.setItem(
+"balance",
+money
+);
+
+
+showMoney();
+
+
+spinning=true;
+
+
+message.innerHTML="🎰 Крутим...";
+
+
+[r1,r2,r3].forEach(x=>
+x.classList.add("spin")
+);
+
+
+
+setTimeout(()=>{
+
+
+[r1,r2,r3].forEach(x=>
+x.classList.remove("spin")
+);
+
+
+
+let a=random();
+let b=random();
+let c=random();
+
+
+r1.innerHTML=a;
+r2.innerHTML=b;
+r3.innerHTML=c;
+
+
+
+let win=0;
+
+
+if(a==b && b==c){
+
+win=Number(bet.value)*5;
+
+}
+
+
+if(a=="7️⃣"&&b=="7️⃣"&&c=="7️⃣"){
+
+win=Number(bet.value)*20;
+
+message.innerHTML="💎 ДЖЕКПОТ!";
+
+}
+
+
+else if(win>0){
+
+message.innerHTML="🎉 Победа +"+win+" ₽";
+
+}
+
+else{
+
+message.innerHTML="😢 Проигрыш";
+
+}
+
+
+
+localStorage.setItem(
+"balance",
+getMoney()+win
+);
+
+
+showMoney();
+
+
+spinning=false;
+
+
+},2000);
+
+
+
+}
+
+
+
+// ручка
+
+let start=0;
+
+let moving=false;
+
+
+
+knob.onpointerdown=function(e){
+
+moving=true;
+
+start=e.clientY;
+
+};
+
+
+
+knob.onpointermove=function(e){
+
+if(!moving)return;
+
+
+let y=e.clientY-start;
+
+
+if(y<0)y=0;
+
+if(y>100)y=100;
+
+
+knob.style.top=y+"px";
+
+};
+
+
+
+knob.onpointerup=function(){
+
+
+moving=false;
+
+
+if(parseInt(knob.style.top)>70){
+
+play();
+
+}
+
+
+knob.style.top="0px";
+
+
+};
+
+</script>
+
 
 </body>
 </html>
