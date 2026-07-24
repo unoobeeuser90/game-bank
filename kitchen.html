@@ -160,6 +160,168 @@ async function loadOrders(){
 
     }
     
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>👨‍🍳 Кухня</title>
+
+
+
+<style>
+
+body{
+
+background:#111827;
+font-family:Arial;
+color:white;
+margin:0;
+
+}
+
+header{
+
+background:#1f2937;
+padding:20px;
+text-align:center;
+font-size:35px;
+font-weight:bold;
+color:#fbbf24;
+
+}
+
+#orders{
+
+max-width:900px;
+margin:auto;
+padding:20px;
+
+}
+
+.card{
+
+background:#1f2937;
+padding:20px;
+margin:20px 0;
+border-radius:15px;
+box-shadow:0 0 15px black;
+
+}
+
+.card h2{
+
+color:#22c55e;
+
+}
+
+button{
+
+width:100%;
+padding:12px;
+margin-top:15px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:#22c55e;
+cursor:pointer;
+
+}
+
+button:hover{
+
+background:#16a34a;
+
+}
+
+.time{
+
+color:#9ca3af;
+
+}
+
+.total{
+
+font-size:22px;
+color:#fbbf24;
+
+}
+
+.empty{
+
+text-align:center;
+margin-top:50px;
+font-size:25px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+👨‍🍳 Кухня
+
+</header>
+
+<div id="orders">
+
+<div class="empty">
+
+Загрузка...
+
+</div>
+
+</div>
+    
+<script type="module">
+
+
+import { createClient } 
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+const supabase = createClient(
+
+"https://kvfytzxnlqxytqcsxkzq.supabase.co",
+
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2Znl0enhubHF4eXRxY3N4a3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzNzE3NTgsImV4cCI6MjA5OTk0Nzc1OH0.dlVGtE359MBEL-P53p6XD7u1js3Bq1FcFQI6-ifBZsk"
+
+);
+
+async function loadOrders(){
+
+    const { data, error } = await supabase
+        .from("orders")
+        .select("*")
+        .eq("status","new")
+        .order("created_at",{ascending:true});
+
+    const box = document.getElementById("orders");
+
+    box.innerHTML = "";
+
+    if(error){
+
+        box.innerHTML = "<div class='empty'>Ошибка загрузки заказов</div>";
+
+        console.error(error);
+
+        return;
+
+    }
+
+    if(data.length===0){
+
+        box.innerHTML = "<div class='empty'>🍽 Заказов пока нет</div>";
+
+        return;
+
+    }
+    
     data.forEach(function(order){
 
         let card = document.createElement("div");
@@ -185,6 +347,37 @@ async function loadOrders(){
     });
 
 }
+
+async function finishOrder(id){
+
+    const { error } = await supabase
+
+        .from("orders")
+
+        .delete()
+
+        .eq("id",id);
+
+    if(error){
+
+        alert("Ошибка удаления");
+
+        return;
+
+    }
+
+    loadOrders();
+
+}
+
+loadOrders();
+
+setInterval(loadOrders,2000);
+
+</script>
+
+</body>
+</html>
 
 async function finishOrder(id){
 
